@@ -5,7 +5,7 @@ export default class CreateUserTokens1601515686301
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users_tokens',
+        name: 'user_tokens',
         columns: [
           {
             name: 'id',
