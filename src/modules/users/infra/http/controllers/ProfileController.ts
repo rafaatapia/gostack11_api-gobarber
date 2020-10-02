@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
-
-import UserMap from '@modules/users/mappers/UsersMap';
 
 export default class ProfileController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -12,11 +11,9 @@ export default class ProfileController {
 
     const showProfile = container.resolve(ShowProfileService);
 
-    const userProfile = await showProfile.execute({ user_id });
+    const user = await showProfile.execute({ user_id });
 
-    const user = UserMap.toDTO(userProfile);
-
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -25,7 +22,7 @@ export default class ProfileController {
 
     const updateProfile = container.resolve(UpdateProfileService);
 
-    const userUpdated = await updateProfile.execute({
+    const user = await updateProfile.execute({
       user_id,
       name,
       email,
@@ -33,8 +30,6 @@ export default class ProfileController {
       old_password,
     });
 
-    const user = UserMap.toDTO(userUpdated);
-
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 }
