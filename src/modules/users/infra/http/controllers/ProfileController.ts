@@ -4,13 +4,17 @@ import { container } from 'tsyringe';
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
 
+import UserMap from '@modules/users/mappers/UsersMap';
+
 export default class ProfileController {
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
     const showProfile = container.resolve(ShowProfileService);
 
-    const user = await showProfile.execute({ user_id });
+    const userProfile = await showProfile.execute({ user_id });
+
+    const user = UserMap.toDTO(userProfile);
 
     return response.json(user);
   }
@@ -21,7 +25,7 @@ export default class ProfileController {
 
     const updateProfile = container.resolve(UpdateProfileService);
 
-    const user = await updateProfile.execute({
+    const userUpdated = await updateProfile.execute({
       user_id,
       name,
       email,
@@ -29,7 +33,7 @@ export default class ProfileController {
       old_password,
     });
 
-    delete user.password;
+    const user = UserMap.toDTO(userUpdated);
 
     return response.json(user);
   }
