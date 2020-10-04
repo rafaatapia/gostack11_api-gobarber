@@ -12,7 +12,7 @@ interface IUploadConfig {
     storage: StorageEngine;
   };
   config: {
-    disk: {};
+    // disk: {};
     aws: {
       bucket: string;
       bucketUrl: string;
