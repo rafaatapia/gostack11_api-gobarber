@@ -1,6 +1,8 @@
 import Redis, { Redis as RedisClient } from 'ioredis';
+import { plainToClass } from 'class-transformer';
 import cacheConfig from '@config/cache';
 
+import { ClassType } from 'class-transformer/ClassTransformer';
 import ICacheProvider from '../models/ICacheProvider';
 
 export default class RedisCacheProvider implements ICacheProvider {
@@ -20,7 +22,6 @@ export default class RedisCacheProvider implements ICacheProvider {
     if (!data) {
       return null;
     }
-
     const parsedData = JSON.parse(data) as T;
 
     return parsedData;
